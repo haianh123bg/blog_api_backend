@@ -8,7 +8,6 @@ public class BlogAPIException extends RuntimeException{
     private String message;
 
     public BlogAPIException(HttpStatus httpStatus, String message) {
-        super("Bad request !");
         this.httpStatus = httpStatus;
         this.message = message;
     }

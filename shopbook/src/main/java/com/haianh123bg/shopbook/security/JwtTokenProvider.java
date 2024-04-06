@@ -71,7 +71,7 @@ public class JwtTokenProvider {
         } catch (UnsupportedJwtException e) {
             throw new BlogAPIException(HttpStatus.BAD_REQUEST, "Unsupported JWT token");
         } catch (IllegalArgumentException e) {
-            throw new BlogAPIException(HttpStatus.BAD_REQUEST, "JWT claims string ís empty");
+            throw new BlogAPIException(HttpStatus.BAD_REQUEST, "JWT claims string is empty");
         }
 
     }
