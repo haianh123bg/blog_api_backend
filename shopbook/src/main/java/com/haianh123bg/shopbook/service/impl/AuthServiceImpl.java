@@ -7,6 +7,7 @@ import com.haianh123bg.shopbook.payload.LoginDTO;
 import com.haianh123bg.shopbook.payload.RegisterDTO;
 import com.haianh123bg.shopbook.repository.RoleRepository;
 import com.haianh123bg.shopbook.repository.UserRepository;
+import com.haianh123bg.shopbook.security.JwtTokenProvider;
 import com.haianh123bg.shopbook.service.AuthService;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -26,15 +27,18 @@ public class AuthServiceImpl implements AuthService {
     private UserRepository userRepository;
     private RoleRepository roleRepository;
     private PasswordEncoder passwordEncoder;
+    private JwtTokenProvider jwtTokenProvider;
 
     public AuthServiceImpl(AuthenticationManager authenticationManager,
                            UserRepository userRepository,
                            RoleRepository roleRepository,
-                           PasswordEncoder passwordEncoder) {
+                           PasswordEncoder passwordEncoder,
+                           JwtTokenProvider jwtTokenProvider) {
         this.authenticationManager = authenticationManager;
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;
+        this.jwtTokenProvider = jwtTokenProvider;
     }
 
     @Override
@@ -42,8 +46,9 @@ public class AuthServiceImpl implements AuthService {
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                 loginDTO.getUsernameOrEmail(), loginDTO.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authentication);
+        String token = jwtTokenProvider.generateToken(authentication);
 
-        return "User Logged-in successfully!";
+        return token;
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.haianh123bg.shopbook.controller;
 
+import com.haianh123bg.shopbook.payload.JWTAuthResponse;
 import com.haianh123bg.shopbook.payload.LoginDTO;
 import com.haianh123bg.shopbook.payload.RegisterDTO;
 import com.haianh123bg.shopbook.service.AuthService;
@@ -23,9 +24,12 @@ public class AuthController {
     }
     // build login rest api
     @PostMapping(value={"/login", "/signin"})
-    public ResponseEntity<String> login(@RequestBody LoginDTO loginDTO){
-        String response = authService.login(loginDTO);
-        return ResponseEntity.ok(response);
+    public ResponseEntity<JWTAuthResponse> login(@RequestBody LoginDTO loginDTO){
+
+        String token = authService.login(loginDTO);
+        JWTAuthResponse jwtAuthResponse = new JWTAuthResponse();
+        jwtAuthResponse.setAccessToken(token);
+        return ResponseEntity.ok(jwtAuthResponse);
     }
 
     // Build Register REST API
